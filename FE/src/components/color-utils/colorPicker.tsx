@@ -1,35 +1,40 @@
-import PropTypes from 'prop-types';
 import { forwardRef, useCallback } from 'react';
-
+import { CSSProperties } from 'react';
 import Stack from '@mui/material/Stack';
 import { alpha } from '@mui/material/styles';
 import ButtonBase from '@mui/material/ButtonBase';
 
 import Iconify from '../iconify';
 
-// ----------------------------------------------------------------------
+interface ColorPickerProps {
+  colors: string[] | string;
+  limit?: number;
+  onSelectColor: (color: string | string[]) => void;
+  selected: string[] | string;
+  sx?: CSSProperties;
+}
 
-const ColorPicker = forwardRef(
+const ColorPicker = forwardRef<HTMLDivElement, ColorPickerProps>(
   ({ colors, selected, onSelectColor, limit = 'auto', sx, ...other }, ref) => {
     const singleSelect = typeof selected === 'string';
 
     const handleSelect = useCallback(
-      (color) => {
+      (color: string) => {
         if (singleSelect) {
           if (color !== selected) {
             onSelectColor(color);
           }
         } else {
-          const newSelected = selected.includes(color)
-            ? selected.filter((value) => value !== color)
-            : [...selected, color];
+          const newSelected = (selected as string[]).includes(color)
+            ? (selected as string[]).filter((value) => value !== color)
+            : [...(selected as string[]), color];
 
           onSelectColor(newSelected);
         }
       },
       [onSelectColor, selected, singleSelect]
     );
-
+    const colorArray = Array.isArray(colors) ? colors : [colors];
     return (
       <Stack
         ref={ref}
@@ -37,7 +42,7 @@ const ColorPicker = forwardRef(
         display="inline-flex"
         sx={{
           flexWrap: 'wrap',
-          ...(limit !== 'auto' && {
+          ...(typeof limit === 'number' && {
             width: limit * 36,
             justifyContent: 'flex-end',
           }),
@@ -45,7 +50,7 @@ const ColorPicker = forwardRef(
         }}
         {...other}
       >
-        {colors.map((color) => {
+        {colorArray.map((color) => {
           const hasSelected = singleSelect ? selected === color : selected.includes(color);
 
           return (
@@ -99,13 +104,5 @@ const ColorPicker = forwardRef(
     );
   }
 );
-
-ColorPicker.propTypes = {
-  colors: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-  limit: PropTypes.number,
-  onSelectColor: PropTypes.func,
-  selected: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-  sx: PropTypes.object,
-};
 
 export default ColorPicker;

@@ -30,7 +30,8 @@
     "types": ["unplugin-icons/types/react"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "src/*": ["./src/*"]
     }
   },
 "include": ["src", "custom.d.ts"],

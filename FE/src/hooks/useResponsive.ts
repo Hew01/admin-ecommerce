@@ -34,14 +34,21 @@ export function useResponsive(query: string, start: Breakpoint, end: Breakpoint)
 
 export function useWidth(): Breakpoint | 'xs' {
   const theme = useTheme();
-
   const keys: Breakpoint[] = [...theme.breakpoints.keys].reverse();
+  const matches: Record<Breakpoint, boolean> = {
+    xs: false,
+    sm: false,
+    md: false,
+    lg: false,
+    xl: false,
+  };
 
-  return (
-    keys.reduce((output: Breakpoint | null, key: Breakpoint) => {
-      const matches = useMediaQuery(theme.breakpoints.up(key));
+  keys.forEach((key: Breakpoint) => {
+    matches[key] = useMediaQuery(theme.breakpoints.up(key));
+  });
 
-      return !output && matches ? key : output;
-    }, null) || 'xs'
-  );
+  const output = keys.find((key: Breakpoint) => matches[key]);
+
+  return output || 'xs';
 }
+

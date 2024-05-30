@@ -1,6 +1,6 @@
 import SimpleBar from 'simplebar-react';
-
 import { alpha, styled } from '@mui/material/styles';
+import { Theme } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -10,7 +10,7 @@ export const StyledRootScrollbar = styled('div')(() => ({
   overflow: 'hidden',
 }));
 
-export const StyledScrollbar = styled(SimpleBar)(({ theme }) => ({
+export const StyledScrollbar = styled(SimpleBar)<{ theme: Theme }>(({ theme }) => ({
   maxHeight: '100%',
   '& .simplebar-scrollbar': {
     '&:before': {

@@ -1,13 +1,14 @@
-import { memo } from 'react';
+import { memo, FC } from 'react';
 import ApexChart from 'react-apexcharts';
-
-import { alpha, styled } from '@mui/material/styles';
-
+import { Theme, alpha, styled } from '@mui/material/styles';
 import { bgBlur } from 'src/theme/css';
 
-// ----------------------------------------------------------------------
+interface ChartProps {
+  theme: Theme;
+}
 
-const Chart = styled(ApexChart)(({ theme }) => ({
+// ----------------------------------------------------------------------
+const Chart = styled(ApexChart)<ChartProps>(({ theme }) => ({
   '& .apexcharts-canvas': {
     // Tooltip
     '& .apexcharts-tooltip': {
@@ -63,5 +64,6 @@ const Chart = styled(ApexChart)(({ theme }) => ({
     },
   },
 }));
+const ChartComponent: FC<ChartProps> = memo(Chart);
 
-export default memo(Chart);
+export default ChartComponent;

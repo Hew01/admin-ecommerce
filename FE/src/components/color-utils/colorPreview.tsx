@@ -1,12 +1,15 @@
-import PropTypes from 'prop-types';
-
+import { CSSProperties } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { alpha } from '@mui/material/styles';
 
-// ----------------------------------------------------------------------
+interface ColorPreviewProps {
+  colors: string[];
+  limit?: number;
+  sx?: CSSProperties;
+}
 
-export default function ColorPreview({ colors, limit = 3, sx }) {
+export default function ColorPreview({ colors, limit = 3, sx }: ColorPreviewProps) {
   const renderColors = colors.slice(0, limit);
 
   const remainingColor = colors.length - limit;
@@ -34,9 +37,3 @@ export default function ColorPreview({ colors, limit = 3, sx }) {
     </Stack>
   );
 }
-
-ColorPreview.propTypes = {
-  colors: PropTypes.arrayOf(PropTypes.string),
-  limit: PropTypes.number,
-  sx: PropTypes.object,
-};

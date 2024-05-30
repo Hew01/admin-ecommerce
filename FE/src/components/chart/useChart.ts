@@ -2,14 +2,14 @@ import merge from 'lodash/merge';
 
 import { alpha, useTheme } from '@mui/material/styles';
 
-import { useResponsive } from 'src/hooks/use-responsive';
+import { useResponsive } from 'src/hooks/useResponsive';
 
 // ----------------------------------------------------------------------
 
 export default function useChart(options) {
   const theme = useTheme();
 
-  const smUp = useResponsive('up', 'sm');
+  const smUp = useResponsive('up', 'sm', 'sm');
 
   const LABEL_TOTAL = {
     show: true,

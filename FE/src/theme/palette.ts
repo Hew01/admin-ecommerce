@@ -1,7 +1,12 @@
 import { alpha } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
-
+declare module '@mui/material/styles' {
+  interface PaletteColor {
+    lighter?: string;
+    darker?: string;
+  }
+}
 // SETUP COLORS
 
 export const grey = {

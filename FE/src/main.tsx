@@ -1,19 +1,10 @@
-/* eslint-disable perfectionist/sort-imports */
-import 'src/global.css';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.tsx'
+import './index.css'
 
-import { useScrollToTop } from '@/hooks/useScrollToTop';
-
-import Router from 'src/routes/sections';
-import ThemeProvider from 'src/theme';
-
-// ----------------------------------------------------------------------
-
-export default function App() {
-  useScrollToTop();
-
-  return (
-    <ThemeProvider>
-      <Router />
-    </ThemeProvider>
-  );
-}
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
