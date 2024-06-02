@@ -120,8 +120,7 @@ def UpdateProduct(productID, document):
     result = db.UpdateDocument("products", productID, updateDocument)
     return result.modified_count > 0
 
-def GetCompactProducts():
-    
+def GetCompactProducts():  
     products = GetAllProduct()
     results = list()
     for product in products:
