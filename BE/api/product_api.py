@@ -1,11 +1,26 @@
 from flask import Flask, jsonify, send_file, send_from_directory, Blueprint, request
 from flask_cors import CORS
 import os, json
+from function import authentication
 from function import products
 from mongoDB.databaseAPI import parse_json
 
 #productAPI
 product_bp = Blueprint("products", __name__, url_prefix="/products")
+@product_bp.before_request
+def check_session():
+    sessionID = request.get_json()["sessionID"]
+    accountID = request.get_json()["accountID"]
+    if not sessionID or not accountID:
+        return jsonify({
+            "message": "sessionID and accountID are required",
+            "success": False
+        }), 400
+    if not authentication.check_session(sessionID, accountID):
+        return jsonify({
+            "message": "authentication failed",
+            "success": False
+        }), 401
 
 #Get All Product
 @product_bp.route('/all', methods=['POST'])
@@ -24,7 +39,7 @@ def get_product_by_id(id):
 #Search product by name
 @product_bp.route('/search', methods=['POST'])
 def search():
-    name = request.form.get("search_string")
+    name = request.get_json()["search_string"]
     cursor = products.FindProductByName(name)
     json_data = parse_json(cursor)
     return json_data
@@ -33,13 +48,13 @@ def search():
 @product_bp.route('/add', methods=['POST'])
 def AddProduct():
     productName = request.get_json()['productName']
-    componentType = request.get_json()['componentType']
+    componentType = request.get_json()['category']
     price = request.get_json()['price']  
     detailedInfo = request.get_json()['Detailed Info']  
     image = request.get_json()['images']
     brand = request.get_json()['brand']
     decription = request.get_json()['description']
-    cursor = products.AddDocument("products", request.get_json())
+    cursor = products.AddProduct("products", request.get_json())
     result = False
     if(cursor):
         result = True
@@ -53,7 +68,7 @@ def AddProduct():
 #RemoveProduct
 @product_bp.route('/remove/<id>', methods=['POST'])
 def RemoveProduct(id):
-    cursor = products.RemoveDocument("products",id)
+    cursor = products.RemoveProduct("products",id)
     result = False
     if(cursor.deleted_count >0):
         result = True
@@ -63,3 +78,29 @@ def RemoveProduct(id):
     return {
         "operationSuccess": result
     }
+
+@product_bp.route('/update/<id>', methods=['POST'])
+def UpdateProduct(id):
+    productName = request.get_json()['productName']
+    componentType = request.get_json()['componentType']
+    price = request.get_json()['price']  
+    detailedInfo = request.get_json()['Detailed Info']  
+    image = request.get_json()['images']
+    brand = request.get_json()['brand']
+    decription = request.get_json()['description']
+    cursor = products.UpdateProduct("products", id, request.get_json())
+    result = False
+    if(cursor):
+        result = True
+    else:
+        result = False
+
+    return {
+        "operationSuccess": result
+    }
+
+@product_bp.route('/compact', methods=['POST'])
+def get_compact_product():
+    cursor = products.GetCompactProducts()
+    json_data = parse_json(cursor)
+    return json_data

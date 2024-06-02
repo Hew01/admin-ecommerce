@@ -16,17 +16,15 @@ def GetCollection(collectionName):
 
 def AddDocument(collectionName, document):
     collection = GetCollection(collectionName)
-    insertDocument = {       
-    "productName": document["productName"],
-    "componentType": document["componentType"],
-    "price": document["price"],
-    "Detailed Info": document["Detailed Info"],
-    "images": document["images"],
-    "brand": document["brand"],
-    "description": document["description"]
-    }
-    result = collection.insert_one(insertDocument)
+    result = collection.insert_one(document)
     return result
+
+def UpdateDocument(collectionName, documentID, document):
+    products = GetCollection(collectionName)
+    query_filter = {'_id': ObjectId(documentID)}
+    update = {"$set": document}
+    result = products.update_one(query_filter, update)
+    return result.modified_count > 0
 
 def RemoveDocument(collectionName, id):
     collection = GetCollection(collectionName)
@@ -37,3 +35,46 @@ def RemoveDocument(collectionName, id):
 def parse_json(data):
     return json.loads(json_util.dumps(data))
 
+def AddInventoryItem(document):
+    collection = GetCollection("inventory")
+    result = collection.insert_one(document)
+    return result.inserted_id
+
+def GetInventoryItem(id):
+    collection = GetCollection("inventory")
+    result = collection.find_one({'_id': ObjectId(id)})
+    return result
+
+def UpdateInventoryItem(id, update):
+    collection = GetCollection("inventory")
+    query_filter = {'_id': ObjectId(id)}
+    result = collection.update_one(query_filter, update)
+    return result.modified_count > 0
+
+def RemoveInventoryItem(id):
+    collection = GetCollection("inventory")
+    query_filter = {'_id': ObjectId(id)}
+    result = collection.delete_one(query_filter)
+    return result.deleted_count > 0
+
+def AddCategoryItem(document):
+    collection = GetCollection("categories")
+    result = collection.insert_one(document)
+    return result.inserted_id
+
+def GetCategoryItem(id):
+    collection = GetCollection("categories")
+    result = collection.find_one({'_id': ObjectId(id)})
+    return result
+
+def UpdateCategoryItem(id, update):
+    collection = GetCollection("categories")
+    query_filter = {'_id': ObjectId(id)}
+    result = collection.update_one(query_filter, update)
+    return result.modified_count > 0
+
+def RemoveCategoryItem(id):
+    collection = GetCollection("categories")
+    query_filter = {'_id': ObjectId(id)}
+    result = collection.delete_one(query_filter)
+    return result.deleted_count > 0
