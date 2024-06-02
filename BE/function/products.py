@@ -115,6 +115,7 @@ def UpdateProduct(productID, document):
     "images": document["images"],
     "brand": document["brand"],
     "description": document["description"],
+    "category": ObjectId(document["category"]),
     }
     result = db.UpdateDocument("products", productID, updateDocument)
     return result.modified_count > 0
