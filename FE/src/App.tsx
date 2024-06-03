@@ -1,19 +1,22 @@
-/* eslint-disable perfectionist/sort-imports */
-import 'src/global.css';
+import { useRoutes } from 'react-router-dom';
+import router from 'src/router';
 
-import { useScrollToTop } from '@/hooks/useScrollToTop';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
-import Router from 'src/routes/sections';
-import ThemeProvider from 'src/theme';
+import { CssBaseline } from '@mui/material';
+import ThemeProvider from './theme/ThemeProvider';
 
-// ----------------------------------------------------------------------
-
-export default function App() {
-  useScrollToTop();
+function App() {
+  const content = useRoutes(router);
 
   return (
     <ThemeProvider>
-      <Router />
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <CssBaseline />
+        {content}
+      </LocalizationProvider>
     </ThemeProvider>
   );
 }
+export default App;

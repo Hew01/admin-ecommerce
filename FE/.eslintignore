@@ -1,7 +1,4 @@
-**/*.js
-node_modules
+# .estlintignore file
+dist
 build
-/src/auto-imports.d.ts
-/src/vite-env.d.ts
-/*.js
-.eslintcache
+node_modules/
