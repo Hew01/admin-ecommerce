@@ -5,6 +5,7 @@ from bson import ObjectId
 from mongoDB.databaseAPI import GetCollection, AddDocument, RemoveDocument
 
 def check_session(sessionID, accountID) -> bool:
+    auto_remove_expired_sessions()
     """
     Check if there is any collection match sessionID and accountID in "sessions" collection
 
@@ -48,6 +49,18 @@ def remove_expired_sessions(sessionID, accountID):
     """
     sessions = GetCollection("sessions")
     now = datetime.datetime.now()
-    query_filter ={'$and': [{'$or': [{'sessionEndDate': {'$lt': now}}, {'sessionEndDate': None}]},{"_id": ObjectId(sessionID), "accountID": accountID}]}
+    query_filter ={"_id": ObjectId(sessionID), "accountID": accountID}
+    result = sessions.delete_many(query_filter)
+    return result.deleted_count > 0
+
+def auto_remove_expired_sessions():
+    """
+    Remove sessions that have expired or if the endDate is None or empty
+
+    :return: number of sessions removed
+    """
+    sessions = GetCollection("sessions")
+    now = datetime.datetime.now()
+    query_filter ={'$or': [{'sessionEndDate': {'$lt': now}}, {'sessionEndDate': None}]}
     result = sessions.delete_many(query_filter)
     return result.deleted_count > 0
