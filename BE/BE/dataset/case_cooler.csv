@@ -1,0 +1,13 @@
+Model,Brand,Fan RPM,Airflow,Noise Level,Price,Amazon URL
+ACFAN00118A,ARCTIC,1800 RPM,56.3 CFM,25.2dBA,8.49,https://www.amazon.com/dp/B07GB16RK7?tag=pcbuilder00-20
+ACFAN00170A,ARCTIC,1800 RPM,56.3 CFM,25.2dBA,9.95,https://www.amazon.com/dp/B081VPP24C?tag=pcbuilder00-20
+AER RGB,NZXT,500 to 1500 RPM,17.48 to 52.44 CFM,22 to 33 dBA,24.55,
+CO-9050015-BLED,Corsair,1500 RPM,52.19 CFM,25.2dBA,19.99,https://www.amazon.com/dp/B00F6S10DC?tag=pcbuilder00-20&th=1
+CO-9050015-RLED,Corsair,1500 RPM,52.19 CFM,25.2dBA,43.1,https://www.amazon.com/dp/B00F6S10MI?tag=pcbuilder00-20
+HD140 RGB,Corsair,600 to 1350 RPM,74 CFM,18 to 28.6 dBA,142.98,https://www.amazon.com/dp/B06XRFXZ2C?tag=pcbuilder00-20
+MasterFan MF120R,Cooler Master,650 to 2000 RPM,59 CFM,31 dBA,79,https://amazon.com/dp/B07GSRJJTQ?tag=pcbuilder00-20
+P12 PST,ARCTIC,1800 RPM,56.3 CFM,56.3dBA,9.99,https://www.amazon.com/dp/B07GJG285F?tag=pcbuilder00-20&th=1
+P12 PST RGB,ARCTIC,2000 RPM,48.8 CFM,25.2dBA,14.99,https://www.amazon.com/dp/B08Y8MVJGS?tag=pcbuilder00-20
+P12 PWM,ARCTIC,2000 RPM,48.8 CFM,25.2dBA,42.99,https://www.amazon.com/dp/B08Y8N5J89?tag=pcbuilder00-20
+P12 Silent,ARCTIC,1050 RPM,24.1 CFM,25.2dBA,8.15,https://www.amazon.com/dp/B07GSTMRFB?tag=pcbuilder00-20
+SP120 RGB,Corsair,1400 RPM,52 CFM,26dBA,74.99,https://www.amazon.com/dp/B01LHYI3E2?tag=pcbuilder00-20
