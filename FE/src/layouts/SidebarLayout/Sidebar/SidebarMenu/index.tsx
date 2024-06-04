@@ -236,7 +236,7 @@ function SidebarMenu() {
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              Orders
+              Management
             </ListSubheader>
           }
         >
@@ -247,10 +247,32 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/management/transactions"
+                  to="/management/orders"
                   startIcon={<TableChartTwoToneIcon />}
                 >
-                  Orders List
+                  Orders
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/products"
+                  startIcon={<TableChartTwoToneIcon />}
+                >
+                  Products
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/categories"
+                  startIcon={<TableChartTwoToneIcon />}
+                >
+                  Categories
                 </Button>
               </ListItem>
             </List>

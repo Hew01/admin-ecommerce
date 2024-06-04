@@ -27,8 +27,14 @@ const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
 const Messenger = Loader(
   lazy(() => import('src/content/applications/Messenger'))
 );
-const Transactions = Loader(
-  lazy(() => import('src/content/applications/Transactions'))
+const Orders = Loader(
+  lazy(() => import('src/content/applications/Orders'))
+);
+const Products = Loader(
+  lazy(() => import('src/content/applications/Products'))
+);
+const Categories = Loader(
+  lazy(() => import('src/content/applications/Categories'))
 );
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
@@ -147,8 +153,16 @@ const routes: RouteObject[] = [
         element: <Navigate to="transactions" replace />
       },
       {
-        path: 'transactions',
-        element: <Transactions />
+        path: 'orders',
+        element: <Orders />
+      },
+      {
+        path: 'products',
+        element: <Products />
+      },
+      {
+        path: 'categories',
+        element: <Categories />
       },
       {
         path: 'profile',

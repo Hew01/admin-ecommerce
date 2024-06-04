@@ -1,10 +1,10 @@
 import { Card } from '@mui/material';
-import { CryptoOrder } from 'src/models/crypto_order';
+import { Order } from 'src/models/order';
 import RecentOrdersTable from './RecentOrdersTable';
 import { subDays } from 'date-fns';
 
 function RecentOrders() {
-  const cryptoOrders: CryptoOrder[] = [
+  const cryptoOrders: Order[] = [
     {
       id: '1',
       orderDetails: 'Fiat Deposit',
