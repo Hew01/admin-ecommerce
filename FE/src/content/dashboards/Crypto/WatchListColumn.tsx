@@ -114,7 +114,7 @@ function WatchListColumn() {
       y: {
         title: {
           formatter: function () {
-            return 'Price: $';
+            return 'Amounts: ';
           }
         }
       },
@@ -125,20 +125,14 @@ function WatchListColumn() {
   };
   const chart1Data = [
     {
-      name: 'Bitcoin Price',
+      name: 'New Orders',
       data: [55.701, 57.598, 48.607, 46.439, 58.755, 46.978, 58.16]
     }
   ];
   const chart2Data = [
     {
-      name: 'Ethereum Price',
+      name: 'Order Success Rates',
       data: [13, 16, 14, 20, 8, 11, 20]
-    }
-  ];
-  const chart3Data = [
-    {
-      name: 'Cardano Price',
-      data: [51.85, 41.77, 22.09, 42.0, 71.9, 51.84, 31.84]
     }
   ];
 
@@ -150,7 +144,7 @@ function WatchListColumn() {
       alignItems="stretch"
       spacing={3}
     >
-      <Grid item md={4} xs={12}>
+      <Grid item md={6} xs={12}>
         <Card
           sx={{
             overflow: 'visible'
@@ -170,10 +164,10 @@ function WatchListColumn() {
               </AvatarWrapper>
               <Box>
                 <Typography variant="h4" noWrap>
-                  Bitcoin
+                  New Orders
                 </Typography>
                 <Typography variant="subtitle1" noWrap>
-                  BTC
+                  Made on each days
                 </Typography>
               </Box>
             </Box>
@@ -192,7 +186,7 @@ function WatchListColumn() {
                   mb: 1
                 }}
               >
-                $56,475.99
+                20,000
               </Typography>
               <Text color="success">
                 <b>+12.5%</b>
@@ -205,7 +199,7 @@ function WatchListColumn() {
                 justifyContent: 'flex-start'
               }}
             >
-              <Label color="success">+$500</Label>
+              <Label color="success">+500</Label>
               <Typography
                 variant="body2"
                 color="text.secondary"
@@ -221,11 +215,11 @@ function WatchListColumn() {
             options={chartOptions}
             series={chart1Data}
             type="area"
-            height={200}
+            height={100}
           />
         </Card>
       </Grid>
-      <Grid item md={4} xs={12}>
+      <Grid item md={6} xs={12}>
         <Card
           sx={{
             overflow: 'visible'
@@ -245,10 +239,10 @@ function WatchListColumn() {
               </AvatarWrapper>
               <Box>
                 <Typography variant="h4" noWrap>
-                  Ethereum
+                  Order Success Rates
                 </Typography>
                 <Typography variant="subtitle1" noWrap>
-                  ETH
+                  Calculate rate of user complete their orders each days
                 </Typography>
               </Box>
             </Box>
@@ -267,7 +261,7 @@ function WatchListColumn() {
                   mb: 1
                 }}
               >
-                $1,968.00
+                60%
               </Typography>
               <Text color="error">
                 <b>-3.24%</b>
@@ -280,7 +274,7 @@ function WatchListColumn() {
                 justifyContent: 'flex-start'
               }}
             >
-              <Label color="error">-$90</Label>
+              <Label color="error">-3%</Label>
               <Typography
                 variant="body2"
                 color="text.secondary"
@@ -296,11 +290,11 @@ function WatchListColumn() {
             options={chartOptions}
             series={chart2Data}
             type="area"
-            height={200}
+            height={100}
           />
         </Card>
       </Grid>
-      <Grid item md={4} xs={12}>
+      {/* <Grid item md={4} xs={12}>
         <Card
           sx={{
             overflow: 'visible'
@@ -320,10 +314,10 @@ function WatchListColumn() {
               </AvatarWrapper>
               <Box>
                 <Typography variant="h4" noWrap>
-                  Cardano
+                  Incomes
                 </Typography>
                 <Typography variant="subtitle1" noWrap>
-                  ADA
+                  How much gains per days
                 </Typography>
               </Box>
             </Box>
@@ -374,7 +368,7 @@ function WatchListColumn() {
             height={200}
           />
         </Card>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 }

@@ -73,7 +73,7 @@ function AccountBalance() {
         }
       }
     },
-    colors: ['#ff9900', '#1c81c2', '#333', '#5c6ac0'],
+    colors: ['#42c903', '#c21c1c'],
     dataLabels: {
       enabled: true,
       formatter: function (val) {
@@ -110,7 +110,7 @@ function AccountBalance() {
     fill: {
       opacity: 1
     },
-    labels: ['Bitcoin', 'Ripple', 'Cardano', 'Ethereum'],
+    labels: ['Income', 'Expense'],
     legend: {
       labels: {
         colors: theme.colors.alpha.trueWhite[100]
@@ -125,7 +125,7 @@ function AccountBalance() {
     }
   };
 
-  const chartSeries = [10, 20, 25, 45];
+  const chartSeries = [30, 70];
 
   return (
     <Card>
@@ -138,19 +138,19 @@ function AccountBalance() {
               }}
               variant="h4"
             >
-              Account Balance
+              Profit
             </Typography>
             <Box>
               <Typography variant="h1" gutterBottom>
                 $54,584.23
               </Typography>
-              <Typography
+              {/* <Typography
                 variant="h4"
                 fontWeight="normal"
                 color="text.secondary"
               >
                 1.0045983485234 BTC
-              </Typography>
+              </Typography> */}
               <Box
                 display="flex"
                 sx={{
@@ -174,7 +174,7 @@ function AccountBalance() {
                 </Box>
               </Box>
             </Box>
-            <Grid container spacing={3}>
+            {/* <Grid container spacing={3}>
               <Grid sm item>
                 <Button fullWidth variant="outlined">
                   Send
@@ -185,7 +185,7 @@ function AccountBalance() {
                   Receive
                 </Button>
               </Grid>
-            </Grid>
+            </Grid> */}
           </Box>
         </Grid>
         <Grid
@@ -238,19 +238,14 @@ function AccountBalance() {
                       />
                     </ListItemAvatarWrapper>
                     <ListItemText
-                      primary="BTC"
+                      primary="Income"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="Bitcoin"
-                      secondaryTypographyProps={{
-                        variant: 'subtitle2',
-                        noWrap: true
-                      }}
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        20%
+                        $35,392
                       </Typography>
-                      <Text color="success">+2.54%</Text>
+                      <Text color="success">+$2,593</Text>
                     </Box>
                   </ListItem>
                   <ListItem disableGutters>
@@ -261,65 +256,14 @@ function AccountBalance() {
                       />
                     </ListItemAvatarWrapper>
                     <ListItemText
-                      primary="XRP"
+                      primary="Expense"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="Ripple"
-                      secondaryTypographyProps={{
-                        variant: 'subtitle2',
-                        noWrap: true
-                      }}
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        10%
+                        $10,938
                       </Typography>
-                      <Text color="error">-1.22%</Text>
-                    </Box>
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatarWrapper>
-                      <img
-                        alt="ADA"
-                        src="/static/images/placeholders/logo/cardano.png"
-                      />
-                    </ListItemAvatarWrapper>
-                    <ListItemText
-                      primary="ADA"
-                      primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="Cardano"
-                      secondaryTypographyProps={{
-                        variant: 'subtitle2',
-                        noWrap: true
-                      }}
-                    />
-                    <Box>
-                      <Typography align="right" variant="h4" noWrap>
-                        40%
-                      </Typography>
-                      <Text color="success">+10.50%</Text>
-                    </Box>
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatarWrapper>
-                      <img
-                        alt="ETH"
-                        src="/static/images/placeholders/logo/ethereum.png"
-                      />
-                    </ListItemAvatarWrapper>
-                    <ListItemText
-                      primary="ETH"
-                      primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="Ethereum"
-                      secondaryTypographyProps={{
-                        variant: 'subtitle2',
-                        noWrap: true
-                      }}
-                    />
-                    <Box>
-                      <Typography align="right" variant="h4" noWrap>
-                        30%
-                      </Typography>
-                      <Text color="error">-12.38%</Text>
+                      <Text color="error">-$33,203</Text>
                     </Box>
                   </ListItem>
                 </List>

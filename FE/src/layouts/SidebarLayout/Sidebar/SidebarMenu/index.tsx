@@ -236,7 +236,7 @@ function SidebarMenu() {
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              Management
+              Orders
             </ListSubheader>
           }
         >
@@ -250,7 +250,7 @@ function SidebarMenu() {
                   to="/management/transactions"
                   startIcon={<TableChartTwoToneIcon />}
                 >
-                  Transactions List
+                  Orders List
                 </Button>
               </ListItem>
             </List>

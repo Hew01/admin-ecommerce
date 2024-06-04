@@ -42,18 +42,7 @@ function WatchList() {
         }}
       >
         <Typography variant="h3">User Traffic</Typography>
-        <ToggleButtonGroup
-          value={tabs}
-          exclusive
-          onChange={handleViewOrientation}
-        >
-          <ToggleButton disableRipple value="watch_list_columns">
-            <ViewWeekTwoToneIcon />
-          </ToggleButton>
-          <ToggleButton disableRipple value="watch_list_rows">
-            <TableRowsTwoToneIcon />
-          </ToggleButton>
-        </ToggleButtonGroup>
+
       </Box>
 
       {tabs === 'watch_list_columns' && <WatchListColumn />}
