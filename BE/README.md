@@ -1,7 +1,7 @@
 # mobile_web_backend
 This is the back end of an mobile app
 
-How to install:
+How to install BE:
 
 * Direct Install:
 - run "pip install -r requirement.txt"
