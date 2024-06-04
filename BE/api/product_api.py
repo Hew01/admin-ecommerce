@@ -2,8 +2,9 @@ from flask import Flask, jsonify, send_file, send_from_directory, Blueprint, req
 from flask_cors import CORS
 import os, json
 from function import authentication
-from function import products
-from mongoDB.databaseAPI import parse_json
+from function import products, recommend
+from bson import ObjectId
+from mongoDB.databaseAPI import parse_json, GetCollection
 
 #productAPI
 product_bp = Blueprint("products", __name__, url_prefix="/products")
@@ -96,4 +97,16 @@ def UpdateProduct(id):
 def get_compact_product():
     cursor = products.GetCompactProducts()
     json_data = parse_json(cursor)
+    return json_data
+
+@product_bp.route('/recommend/<id>/<int:quantity>', methods=['POST'])
+def get_recommend_product(id, quantity):
+    product = GetCollection("products").find_one({"_id": ObjectId(id)})
+    list = recommend.recommend(product["productName"], quantity)
+    result = []
+    for model in list:
+        recommended = GetCollection("products").find_one({"productName": model})
+        if(recommended):
+            result.append(recommended)
+    json_data = parse_json(result)
     return json_data

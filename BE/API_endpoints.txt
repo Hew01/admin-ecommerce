@@ -1,5 +1,5 @@
 Dashboard:
-* Logged in:
+0* Logged in:
  - /?userid={id}/dashboard
  - GET, params user id
  - Gửi credential của user khi log in và trả về user id để log-in vào web
@@ -50,12 +50,12 @@ số lượng, giả cả, tình trạng đăng bán
  - DELETE
  - Xoá sản phẩm
 
-* Get Category List
+0* Get Category List
  - /?userid={id}/category/
  - GET, trả về kết quả json
  - Trả về danh sách loại sản phẩm, gồm: tên, tổng số lượng, tổng tiền thu được từ việc bán ra
 
-* Add category
+0* Add category
 - /?userid={id}/category/add
  - POST
  - Tạo thông tin của category gồm: ID (tự generate), tên category, ảnh category (ko cần thiết), 
@@ -64,23 +64,23 @@ category cha, mô tả
 * Edit/delete category (như product)
 
 Order:
-* Get total:
+0* Get total:
  - /?userid={id}/order/total
  - GET, trả về json
  - Trả về tổng số lượng của: pending payment, completed payment, failed
 
-* Get order list
+0* Get order list
  - /?userid={id}/order/
  - GET, trả về json
  - Trả về danh sách order, gồm id order, date, tên khách, email khách, tình trạng thanh toán, 
 tình trạng ship, phương thức thanh toán
 
-* Tạo order:
+0* Tạo order:
  - /?userid={id}/order/create
  - POST
  - Tạo đơn hàng dựa trên các sản phẩm đã đặt, xem bảng order để biết các item.
 
-* Get/edit order detail
+0* Get/edit order detail
  - /?userid={id}/order/?orderid={id}
  - PUT
  - Xem/edit thông tin order gồm:
@@ -91,25 +91,26 @@ tình trạng ship, phương thức thanh toán
 	Thông tin ship (cái này tham khảo trên mấy app vận chuyển, ko thì để fakedata cx dc)
 
 Customers:
-* Get customer list:
+0* Get customer list:
  - /?userid={id}/customer/
  - GET, trả về json
  - Trả về danh sách customer, gồm tên user, email, số lượng order, số lượng tiền tiêu
 
-* Get/edit customer detail
+0* Get/edit customer detail
  - /?userid={id}/customer/?customerid={id}
  - PUT
  - Xem/edit thông tin customer gồm:
 	gồm tên user, email, số lượng order, số lượng tiền tiêu
 	danh sách các order của người dùng
 	thay đổi mật khẩu người dùng
+
 Coupon/Promotion:
-* Get coupon list:
+0* Get coupon list:
  - /?userid={id}/coupon/
  - GET, trả về json
  - Trả về danh sách coupon, gồm tên coupon, tỉ lệ % giảm, đối tượng áp dụng (sản phẩm, loại sản phẩm, order)
 tính trạng áp dụng (active, inactive), ngày áp dụng, ngày kết thúc
-* Get/edit coupon detail
+0* Get/edit coupon detail
  - /?userid={id}/coupon/?couponid={id}
  - PUT
  - Xem/edit thông tin coupon gồm:

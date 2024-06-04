@@ -17,7 +17,8 @@ def insert_order(document):
         "shipAddress": document["shipAddress"],
         "orderStatus": document["orderStatus"],
         "orderNote": document["orderNote"],
-        "shippingStatus": document["shippingStatus"]
+        "shippingStatus": document["shippingStatus"],
+        "paymentMethod": document["paymentMethod"]
     }
     collection = db.GetCollection("orders")
     result = collection.insert_one(insertDocument)
@@ -50,7 +51,8 @@ def update_order(order_id, document):
         "shipAddress": document["shipAddress"],
         "orderStatus": document["orderStatus"],
         "orderNote": document["orderNote"],
-        "shippingStatus": document["shippingStatus"]
+        "shippingStatus": document["shippingStatus"],
+        "paymentMethod": document["paymentMethod"]
     }
     result = db.UpdateDocument("orders", order_id, update)
     return result
@@ -60,5 +62,27 @@ def get_order_by_id(order_id):
     query_filter = {'_id': ObjectId(order_id)}
     result = collection.find_one(query_filter)
     return result
+
+def get_order_status():
+    orders = get_all_orders()
+    paid = 0
+    pending =0
+    cancelled = 0
+    failed = 0
+    for order in orders:
+        if order["orderStatus"] == "paid":
+            paid += 1
+        elif order["orderStatus"] == "pending":
+            pending += 1
+        elif order["orderStatus"] == "cancelled":
+            cancelled += 1
+        elif order["orderStatus"] == "failed":
+            failed += 1
+    return {
+        "paid": paid,
+        "pending": pending,
+        "cancelled": cancelled,
+        "failed": failed
+    }
 
 

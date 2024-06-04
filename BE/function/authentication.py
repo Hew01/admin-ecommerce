@@ -26,7 +26,7 @@ def create_session(accountID: str, sessionType: str) -> str:
     :return: the sessionID (string) of the new session
     """
     sessions = GetCollection("sessions")
-    sessionCreatedDate = datetime.utcnow()
+    sessionCreatedDate = datetime.datetime.now()
     if sessionType == "fixed":
         sessionEndDate = sessionCreatedDate + timedelta(days=30)
     else:
@@ -40,14 +40,14 @@ def create_session(accountID: str, sessionType: str) -> str:
     result = sessions.insert_one(document)
     return str(result.inserted_id)
 
-def remove_expired_sessions():
+def remove_expired_sessions(sessionID, accountID):
     """
     Remove sessions that have expired or if the endDate is None or empty
 
     :return: number of sessions removed
     """
     sessions = GetCollection("sessions")
-    now = datetime.utcnow()
-    query_filter = {'$or': [{'sessionEndDate': {'$lt': now}}, {'sessionEndDate': None}]}
+    now = datetime.datetime.now()
+    query_filter ={'$and': [{'$or': [{'sessionEndDate': {'$lt': now}}, {'sessionEndDate': None}]},{"_id": ObjectId(sessionID), "accountID": accountID}]}
     result = sessions.delete_many(query_filter)
-    return result.deleted_count
+    return result.deleted_count > 0

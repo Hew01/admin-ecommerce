@@ -47,7 +47,6 @@ def delete_category(category_id):
 def update_category(category_id, document):
     update = {
         "categoryName": document["categoryName"],
-        "productQuantity": document["productQuantity"]
     }
     result = db.UpdateDocument("orders", category_id, update)
     return result

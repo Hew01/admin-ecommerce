@@ -71,3 +71,9 @@ def add_order():
     return {
         "operationSuccess": result
     }
+
+@order_bp.route('/status', methods=['POST'])
+def update_order_status():
+    cursor = orders.get_order_status()
+    json_data = parse_json(cursor)
+    return json_data
