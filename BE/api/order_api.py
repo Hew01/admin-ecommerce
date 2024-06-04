@@ -38,9 +38,13 @@ def delete_order(id):
 @order_bp.route('/update/<id>', methods=['POST'])
 def update_order(id):
     cursor = orders.update_order(id, request.get_json())
-    return {
-        "operationSuccess": cursor
-    }
+    if(type(cursor) == bool):
+        return {
+            "operationSuccess": cursor
+        }
+    else:
+        json_data = parse_json(cursor)
+        return json_data
 
 @order_bp.route('/all', methods=['POST'])
 def get_all_orders():
@@ -62,16 +66,13 @@ def add_order():
     orderNote = request.get_json()["orderNote"],
     shipingStatus = request.get_json()["shippingStatus"]
     cursor = orders.insert_order(request.get_json())
-    result = False
-    if(cursor):
-        result = True
+    if(type(cursor) == bool):
+        return {
+            "operationSuccess": cursor
+        }
     else:
-        result = False
-
-    return {
-        "operationSuccess": result
-    }
-
+        json_data = parse_json(cursor)
+        return json_data
 @order_bp.route('/status', methods=['POST'])
 def update_order_status():
     cursor = orders.get_order_status()

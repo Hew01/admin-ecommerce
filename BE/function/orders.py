@@ -20,6 +20,10 @@ def insert_order(document):
         "shippingStatus": document["shippingStatus"],
         "paymentMethod": document["paymentMethod"]
     }
+    if(order_validation(insertDocument)==False):
+        return{
+            "orderLegality": False
+        }
     collection = db.GetCollection("orders")
     result = collection.insert_one(insertDocument)
     return result.inserted_id
@@ -54,6 +58,10 @@ def update_order(order_id, document):
         "shippingStatus": document["shippingStatus"],
         "paymentMethod": document["paymentMethod"]
     }
+    if(order_validation(update)==False):
+        return{
+            "orderLegality": False
+        }
     result = db.UpdateDocument("orders", order_id, update)
     return result
 
@@ -86,3 +94,24 @@ def get_order_status():
     }
 
 
+def order_validation(order):
+    isLegit = True
+    totalAmount = 0
+    for item in order["productList"]:
+        product = db.GetCollection("products").find_one({'_id': ObjectId(item["productID"])})
+        totalAmount += (product["price"] * item["quantity"])
+    if order["totalAmount"] != totalAmount:    
+        isLegit = False
+        return isLegit
+    finalAmount = totalAmount
+    for item in order["couponID"]:
+        coupon = db.GetCollection("coupons").find_one({'_id': ObjectId(item)})
+        if coupon is not None:
+            if(coupon["couponType"] == "percent"):
+                finalAmount = finalAmount - (finalAmount * coupon["couponValue"] / 100)
+            elif(coupon["couponType"] == "flat"):
+                finalAmount = finalAmount - coupon["couponValue"]
+    if order["finalAmount"] != finalAmount:
+        isLegit = False
+        return isLegit
+    return isLegit
