@@ -118,7 +118,7 @@ def UpdateProduct(productID, document):
     "category": ObjectId(document["category"]),
     }
     result = db.UpdateDocument("products", productID, updateDocument)
-    return result.modified_count > 0
+    return result
 
 def GetCompactProducts():  
     products = GetAllProduct()

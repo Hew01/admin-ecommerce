@@ -81,13 +81,6 @@ def RemoveProduct(id):
 
 @product_bp.route('/update/<id>', methods=['POST'])
 def UpdateProduct(id):
-    productName = request.get_json()['productName']
-    componentType = request.get_json()['componentType']
-    price = request.get_json()['price']  
-    detailedInfo = request.get_json()['Detailed Info']  
-    image = request.get_json()['images']
-    brand = request.get_json()['brand']
-    decription = request.get_json()['description']
     cursor = products.UpdateProduct("products", id, request.get_json())
     result = False
     if(cursor):

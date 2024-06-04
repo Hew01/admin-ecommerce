@@ -24,7 +24,7 @@ def UpdateDocument(collectionName, documentID, document):
     query_filter = {'_id': ObjectId(documentID)}
     update = {"$set": document}
     result = products.update_one(query_filter, update)
-    return result.modified_count > 0
+    return result.matched_count > 0
 
 def RemoveDocument(collectionName, id):
     collection = GetCollection(collectionName)
@@ -35,46 +35,9 @@ def RemoveDocument(collectionName, id):
 def parse_json(data):
     return json.loads(json_util.dumps(data))
 
-def AddInventoryItem(document):
-    collection = GetCollection("inventory")
-    result = collection.insert_one(document)
-    return result.inserted_id
 
-def GetInventoryItem(id):
-    collection = GetCollection("inventory")
-    result = collection.find_one({'_id': ObjectId(id)})
+def FindDocuemntByString(collectionName, fieldName, string):
+    products = GetCollection(collectionName)
+    search_regex = {"$regex": string, "$options": "i"}
+    result = products.find({fieldName: search_regex})
     return result
-
-def UpdateInventoryItem(id, update):
-    collection = GetCollection("inventory")
-    query_filter = {'_id': ObjectId(id)}
-    result = collection.update_one(query_filter, update)
-    return result.modified_count > 0
-
-def RemoveInventoryItem(id):
-    collection = GetCollection("inventory")
-    query_filter = {'_id': ObjectId(id)}
-    result = collection.delete_one(query_filter)
-    return result.deleted_count > 0
-
-def AddCategoryItem(document):
-    collection = GetCollection("categories")
-    result = collection.insert_one(document)
-    return result.inserted_id
-
-def GetCategoryItem(id):
-    collection = GetCollection("categories")
-    result = collection.find_one({'_id': ObjectId(id)})
-    return result
-
-def UpdateCategoryItem(id, update):
-    collection = GetCollection("categories")
-    query_filter = {'_id': ObjectId(id)}
-    result = collection.update_one(query_filter, update)
-    return result.modified_count > 0
-
-def RemoveCategoryItem(id):
-    collection = GetCollection("categories")
-    query_filter = {'_id': ObjectId(id)}
-    result = collection.delete_one(query_filter)
-    return result.deleted_count > 0
