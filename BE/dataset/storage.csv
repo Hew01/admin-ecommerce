@@ -1,0 +1,13 @@
+Model,Brand,Capacity,Type,RPM,Interface,Cache Memory,Form Factor,Price,Amazon URL
+970 EVO,Samsung,1 TB,SSD,7200 RPM,PCIe 3.0 x4,1024 MB,M.2-2280,219.99,https://amazon.com/dp/B07BN217QG?tag=pcbuilder00-20
+A400,Kingston,240 GB,SSD,7200 RPM,SATA III,No cache,"2.5""",19.99,https://www.amazon.com/dp/B01N5IB20Q?tag=pcbuilder00-20
+BarraCuda,Seagate,2 TB,HHD,7200 RPM,SATA III,256 MB,"3.5""",55.49,https://amazon.com/dp/B075WWN4QJ?tag=pcbuilder00-20
+Blue,Western Digital,1 TB,SSD,7200 RPM,SATA III 6Gb/s,No cache,M.2-2280,122.11,https://www.amazon.com/dp/B073SB2MXT?tag=pcbuilder00-20&th=1
+Blue 500,Western Digital,500 GB,SSD,7200 RPM,SATA III 6Gb/s,No cache,M.2-2280,68,https://www.amazon.com/dp/B073SBX6TY?tag=pcbuilder00-20
+Blue SN 550,Western Digital,1 TB,SSD,7200 RPM,PCIe 4.0 x4,No cache,M.2-2280,156,https://www.amazon.com/dp/B07YFFX5MD?tag=pcbuilder00-20
+Caviar Blue,Western Digital,1 TB,HDD,7200RPM,SATA III,64 MB,"3.5""",34.99,https://www.amazon.com/dp/B0088PUEPK?tag=pcbuilder00-20&th=1
+EVO 500,Samsung,500 GB,SSD,7200 RPM,SATA III 6Gb/s,512 MB,"2.5""",74.99,https://www.amazon.com/dp/B0781Z7Y3S?tag=pcbuilder00-20
+GX2,TEAMGROUP,512 GB,SSD,7200 RPM,SATA III,No cache,"2.5""",36.99,https://www.amazon.com/dp/B07NRMXWHW?tag=pcbuilder00-20&th=1
+MX 500,Crucial,1 TB,SSD,7200 RPM,SATA III,No cache,"2.5""",67.99,https://www.amazon.com/dp/B078211KBB?tag=pcbuilder00-20
+P1,Crucial,1 TB,SSD,7200 RPM,PCIe 3.0 x4,No cache,SATA III,129.99,https://www.amazon.com/dp/B07J2Q4SWZ?tag=pcbuilder00-20&th=1
+SN 750,Western Digital,1 TB,SSD,7200 RPM,PCIe 4.0 x4,No cache,M.2-2280,137.99,https://pcbuilder.net/component-details/storage/western-digital-sn-750-wds100t3x0c-00sjg0/
