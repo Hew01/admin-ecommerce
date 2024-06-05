@@ -1,5 +1,5 @@
 import { Typography, Button, Grid } from '@mui/material';
-
+import { NavLink as RouterLink } from 'react-router-dom';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
 function PageHeader() {
@@ -12,8 +12,9 @@ function PageHeader() {
       </Grid>
       <Grid item>
         <Button
-
+          component={RouterLink}
           variant="contained"
+          to="add"
           startIcon={<AddTwoToneIcon fontSize="small" />}
         >
           Create order
