@@ -16,7 +16,7 @@ function PageHeader() {
           variant="contained"
           startIcon={<AddTwoToneIcon fontSize="small" />}
         >
-          Create orders
+          Create order
         </Button>
       </Grid>
     </Grid>

@@ -7,7 +7,7 @@ function PageHeader() {
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
         <Typography variant="h3" component="h3" gutterBottom>
-          Orders
+          Categories
         </Typography>
       </Grid>
       <Grid item>
@@ -16,7 +16,7 @@ function PageHeader() {
           variant="contained"
           startIcon={<AddTwoToneIcon fontSize="small" />}
         >
-          Create orders
+          Create Category
         </Button>
       </Grid>
     </Grid>
