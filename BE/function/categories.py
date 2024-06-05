@@ -57,12 +57,4 @@ def get_category_by_id(category_id):
     result = collection.find_one(query_filter)
     return result
 
-def UpdateCategoryQuantity():
-    categories = db.GetCollection("categories").find({})
-    for category in categories:
-        category["categoryQuantity"] = db.GetCollection("products").count_documents({"category": category["_id"]})
-        db.UpdateDocument("categories", category["_id"], {
-            "categoryName": category["categoryName"],
-            "categoryQuantity": category["categoryQuantity"]
-        })  
-    return True
+

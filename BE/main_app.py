@@ -5,6 +5,7 @@ import api.categories_api
 import api.coupons_api
 import api.customer_api
 import api.order_api
+import api.posts_api
 import api.product_api
 import api.accounts_api
 from function import products
@@ -60,6 +61,8 @@ app.register_blueprint(api.accounts_api.account_bp)
 #/accounts/add
 #/accounts/changepassword/<id>
 #/accounts/remove/<id>
+
+app.register_blueprint(api.posts_api.post_bp)
 
 
 if __name__ == '__main__':
