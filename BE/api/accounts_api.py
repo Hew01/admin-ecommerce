@@ -7,20 +7,6 @@ from mongoDB.databaseAPI import parse_json
 
 #productAPI
 account_bp = Blueprint("account", __name__, url_prefix="/accounts")
-account_bp.before_request
-def check_session():
-    sessionID = request.get_json()["sessionID"]
-    accountID = request.get_json()["accountID"]
-    if not sessionID or not accountID:
-        return jsonify({
-            "message": "sessionID and accountID are required",
-            "success": False
-        }), 400
-    if not authentication.check_session(sessionID, accountID):
-        return jsonify({
-            "message": "authentication failed",
-            "success": False
-        }), 401
     
 @account_bp.route("/add", methods=["POST"])
 def Addaccount():
