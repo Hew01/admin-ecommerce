@@ -218,9 +218,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                   onChange={handleSelectAllOrders}
                 />
               </TableCell>
-              <TableCell>Categories</TableCell>
+              <TableCell sx={{width: '40%'}}>Categories</TableCell>
               <TableCell>Total Products</TableCell>
-              <TableCell>Source</TableCell>
               <TableCell align="right">Total Earnings</TableCell>
               <TableCell align="right">Status</TableCell>
               <TableCell align="right">Actions</TableCell>
@@ -270,20 +269,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       noWrap
                     >
                       {cryptoOrder.orderID}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {cryptoOrder.sourceName}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {cryptoOrder.sourceDesc}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
