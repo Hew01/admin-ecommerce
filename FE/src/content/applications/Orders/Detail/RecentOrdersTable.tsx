@@ -19,10 +19,11 @@ import {
   TextField,
   Button,
   IconButton,
-  Tooltip
+  Tooltip,
+  Autocomplete
 } from '@mui/material';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import SaveIcon from '@mui/icons-material/Save';
+import CloseIcon from '@mui/icons-material/Close';
 import { Order } from 'src/models/order';
 import BulkActions from './BulkActions';
 
@@ -34,6 +35,17 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
   const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
   const [addingProduct, setAddingProduct] = useState(false);
   const [newProduct, setNewProduct] = useState<Order | null>(null);
+  const [value, setValue] = useState(null);
+  const [error, setError] = useState(false);
+
+  const handleChange = (event) => {
+    const inputValue = event.target.value;
+    if (inputValue <= 0 && inputValue.toString() !== '') {
+      setError(true);
+    } else {
+      setError(false);
+    }
+  };
   const selectedBulkActions = selectedOrders.length > 0;
   const handleSelectAllOrders = (
     event: ChangeEvent<HTMLInputElement>
@@ -75,6 +87,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
     }
     setAddingProduct(false);
   };
+  const top100Films = [
+    { title: 'The Shawshank Redemption', year: 1994 }
+    // The rest of your list
+  ];
   return (
     <Card>
       {selectedBulkActions && (
@@ -102,88 +118,20 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                   onChange={handleSelectAllOrders}
                 />
               </TableCell>
-              <TableCell>Product</TableCell>
-              <TableCell align="right">Price</TableCell>
-              <TableCell align="right">Amount</TableCell>
-              <TableCell align="right">Total</TableCell>
+              <TableCell sx={{ width: '40%' }}>Product</TableCell>
+              <TableCell sx={{ width: '15%' }} align="right">
+                Price
+              </TableCell>
+              <TableCell sx={{ width: '15%' }} align="right">
+                Amount
+              </TableCell>
+              <TableCell sx={{ width: '15%' }} align="right">
+                Total
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {addingProduct && (
-              <TableRow>
-                <TableCell>
-                  <Box flexDirection="row" display="flex" alignItems="center">
-                  <Tooltip title="Edit Order" arrow>
-                    <IconButton
-                      onClick={handleDoneAddProduct}
-                      sx={{
-                        '&:hover': {
-                          background: theme.colors.primary.lighter
-                        },
-                        color: theme.palette.primary.main
-                      }}
-                      color="inherit"
-                      size="small"
-                    >
-                      <EditTwoToneIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Delete Order" arrow>
-                    <IconButton
-                      onClick={handleCancelAddProduct}
-                      sx={{
-                        '&:hover': { background: theme.colors.error.lighter },
-                        color: theme.palette.error.main
-                      }}
-                      color="inherit"
-                      size="small"
-                    >
-                      <DeleteTwoToneIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                  </Box>
-                </TableCell>
-                <TableCell>
-                  <TextField
-                    variant="outlined"
-                    onChange={(e) =>
-                      setNewProduct({ ...newProduct, product: e.target.value })
-                    }
-                  />
-                </TableCell>
-                <TableCell>
-                  <TextField
-                    variant="outlined"
-                    onChange={(e) =>
-                      setNewProduct({ ...newProduct, product: e.target.value })
-                    }
-                  />
-                </TableCell>
-                <TableCell>
-                  <TextField
-                    variant="outlined"
-                    onChange={(e) =>
-                      setNewProduct({ ...newProduct, product: e.target.value })
-                    }
-                  />
-                </TableCell>
-                <TableCell>
-                  <TextField
-                    variant="outlined"
-                    onChange={(e) =>
-                      setNewProduct({ ...newProduct, product: e.target.value })
-                    }
-                  />
-                </TableCell>
-              </TableRow>
-            )}
-            {!addingProduct && (
-              <TableRow onClick={handleAddProduct}>
-                <TableCell padding='checkbox'/>
-                <TableCell colSpan={6}>Add product...</TableCell>
-              </TableRow>
-            )}
-            {/* {orders.map((order) => {
+          {orders.map((order) => {
               const isOrderSelected = selectedOrders.includes(
                 order.id
               );
@@ -193,7 +141,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                   key={order.id}
                   selected={isOrderSelected}
                 >
-                  <TableCell padding="checkbox">
+                  <TableCell padding="checkbox" sx={{paddingLeft: 1.6}}>
                     <Checkbox
                       color="primary"
                       checked={isOrderSelected}
@@ -257,7 +205,100 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                   </TableCell>
                 </TableRow>
               );
-            })} */}
+            })}
+            {addingProduct && (
+              <TableRow>
+                <TableCell>
+                  <Box flexDirection="row" display="flex" alignItems="center">
+                    <Tooltip title="Save" arrow>
+                      <IconButton
+                        onClick={handleDoneAddProduct}
+                        sx={{
+                          '&:hover': {
+                            background: theme.colors.primary.lighter
+                          },
+                          color: theme.palette.primary.main
+                        }}
+                        color="inherit"
+                        size="small"
+                      >
+                        <SaveIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Cancel" arrow>
+                      <IconButton
+                        onClick={handleCancelAddProduct}
+                        sx={{
+                          '&:hover': { background: theme.colors.error.lighter },
+                          color: theme.palette.error.main
+                        }}
+                        color="inherit"
+                        size="small"
+                      >
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Autocomplete
+                    value={value}
+                    onChange={(event, newValue) => {
+                      setValue(newValue);
+                    }}
+                    id="free-solo"
+                    freeSolo
+                    options={top100Films}
+                    getOptionLabel={(option) => option.title}
+                    renderOption={(props, option) => (
+                      <Box component="li" {...props}>
+                        <Typography variant="body1">{option.title}</Typography>
+                      </Box>
+                    )}
+                    renderInput={(params) => (
+                      <TextField {...params} variant="outlined" />
+                    )}
+                  />
+                </TableCell>
+                <TableCell></TableCell>
+                <TableCell>
+                  <Tooltip
+                    open={error}
+                    title="Do not input that number"
+                    placement="right"
+                  >
+                    <TextField
+                      variant="outlined"
+                      type="number"
+                      value={value}
+                      onChange={handleChange}
+                    />
+                  </Tooltip>
+                </TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            )}
+            {!addingProduct && (
+              <TableRow sx={{ cursor: 'pointer' }} onClick={handleAddProduct}>
+                <TableCell padding="checkbox"/>
+                <TableCell colSpan={6}>
+                  <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
+                    + Add product...
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            )}
+            <TableRow>
+              <TableCell/>
+              <TableCell>
+                <Typography variant="h3">Total</Typography>
+              </TableCell>
+              <TableCell/>
+              <TableCell/>
+              <TableCell align='right'>
+                <Typography variant='h3'>${numeral(0).format('0,0.00')}</Typography>
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>

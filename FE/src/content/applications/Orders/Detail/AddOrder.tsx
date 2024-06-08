@@ -4,14 +4,16 @@ import {
   Card,
   Container,
   Grid,
+  IconButton,
   InputAdornment,
   MenuItem,
   Switch,
   TextField,
-  Typography
+  Typography,
+  useTheme
 } from '@mui/material';
 import { useState } from 'react';
-import ReactQuill from 'react-quill';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import 'react-quill/dist/quill.snow.css';
 import RecentOrders from './RecentOrders';
 
@@ -37,7 +39,7 @@ const currencies = [
 function AddOrder() {
   const [currency, setCurrency] = useState('EUR');
   const [image, setImage] = useState(null);
-
+  const theme = useTheme();
   const handleChange = (event) => {
     setCurrency(event.target.value);
   };
@@ -78,45 +80,30 @@ function AddOrder() {
             <Card sx={{ overflow: 'visible' }}>
               <Box sx={{ p: 3 }}>
                 <Typography variant="h4" noWrap>
-                  Organize
+                  Customer Info
                 </Typography>
                 <Box sx={{ mt: 3 }}>
-                  <Typography variant="subtitle1" noWrap>
-                    Category
+                  <Typography variant="h5" noWrap>
+                    Alexandra David
                   </Typography>
-                  <TextField
-                    id="standard-select-currency"
-                    select
-                    value={currency}
-                    onChange={handleChange}
-                    variant="standard"
-                    fullWidth
-                  >
-                    {currencies.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
+                  <Typography variant="subtitle1" noWrap>
+                    Customer ID: #88829509
+                  </Typography>
                 </Box>
                 <Box sx={{ mt: 3 }}>
-                  <Typography variant="subtitle1" noWrap>
-                    Status
+                  <Typography variant="body1" color={theme.palette.success.dark} noWrap>
+                    <IconButton
+                      sx={{
+                        color: theme.palette.success.main,
+                        paddingRight: '15px'
+                      }}
+                      color="inherit"
+                      size="small"
+                    >
+                      <ShoppingBasketIcon fontSize="small" />
+                    </IconButton>
+                    Orders: 13
                   </Typography>
-                  <TextField
-                    id="standard-select-currency"
-                    select
-                    value={currency}
-                    onChange={handleChange}
-                    variant="standard"
-                    fullWidth
-                  >
-                    {currencies.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
                 </Box>
                 <Box
                   display="flex"
@@ -169,9 +156,17 @@ function AddOrder() {
                       <img
                         src={image}
                         alt="preview"
-                        style={{ marginTop: '20px', maxHeight: '200px', width: '100%' }}
+                        style={{
+                          marginTop: '20px',
+                          maxHeight: '200px',
+                          width: '100%'
+                        }}
                       />
-                      <Button variant="contained" component="label" sx={{mt:3}}>
+                      <Button
+                        variant="contained"
+                        component="label"
+                        sx={{ mt: 3 }}
+                      >
                         Choose another image
                         <input
                           type="file"
