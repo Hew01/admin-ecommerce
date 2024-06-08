@@ -11,13 +11,13 @@ import EditProfileTab from './EditProfileTab';
 import NotificationsTab from './NotificationsTab';
 import SecurityTab from './SecurityTab';
 
-const TabsWrapper = styled(Tabs)(
-  () => `
-    .MuiTabs-scrollableX {
-      overflow-x: auto !important;
-    }
-`
-);
+// const TabsWrapper = styled(Tabs)(
+//   () => `
+//     .MuiTabs-scrollableX {
+//       overflow-x: auto !important;
+//     }
+// `
+// );
 
 function ManagementUserSettings() {
   const [currentTab, setCurrentTab] = useState<string>('activity');
@@ -32,7 +32,7 @@ function ManagementUserSettings() {
   const handleTabsChange = (event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
   };
-
+  const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   return (
     <>
       <Helmet>
@@ -42,7 +42,7 @@ function ManagementUserSettings() {
         <PageHeader />
       </PageTitleWrapper>
       <Container maxWidth="lg">
-        <Grid
+        {/* <Grid
           container
           direction="row"
           justifyContent="center"
@@ -69,6 +69,13 @@ function ManagementUserSettings() {
             {currentTab === 'notifications' && <NotificationsTab />}
             {currentTab === 'security' && <SecurityTab />}
           </Grid>
+        </Grid> */}
+        <Grid container spacing={2}>
+          {cards.map((card, index) => (
+            <Grid key={index} item xs={12} sm={6}>
+              <ActivityTab />
+            </Grid>
+          ))}
         </Grid>
       </Container>
       <Footer />

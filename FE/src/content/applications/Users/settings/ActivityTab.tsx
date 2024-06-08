@@ -39,19 +39,7 @@ function ActivityTab() {
         titleTypographyProps={{ variant: 'h4' }}
         subheaderTypographyProps={{ variant: 'subtitle2' }}
         title="Allison Lipshutz"
-        subheader={
-          <>
-            Managing Partner,{' '}
-            <Link href="#" underline="hover">
-              #software
-            </Link>
-            ,{' '}
-            <Link href="#" underline="hover">
-              #managers
-            </Link>
-            , Google Inc.
-          </>
-        }
+        subheader={<>Managing Partner</>}
       />
       <Box px={3} pb={2}>
         <Typography variant="h4" fontWeight="normal">
@@ -63,17 +51,6 @@ function ActivityTab() {
         image="/static/images/placeholders/covers/6.jpg"
         title="Card Cover"
       />
-      <Box p={3}>
-        <Typography variant="h2" sx={{ pb: 1 }}>
-          Organizing Your Remote Office for Maximum Productivity
-        </Typography>
-        <Typography variant="subtitle2">
-          <Link href="#" underline="hover">
-            example.com
-          </Link>{' '}
-          • 4 mins read
-        </Typography>
-      </Box>
       <Divider />
       <CardActionsWrapper
         sx={{
