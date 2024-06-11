@@ -3,3 +3,4 @@ flask_cors
 pymongo[srv]
 pandas
 facebook-sdk
+pymessenger

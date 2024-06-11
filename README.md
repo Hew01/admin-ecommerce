@@ -1,4 +1,4 @@
-# mobile_web_backend
+# ECOMMERCE_BACK_END
 This is the back end of an mobile app
 
 How to install BE:
