@@ -13,17 +13,15 @@ def Addaccount():
     accountname = request.get_json()['username']
     password = request.get_json()['password']
     accountType = request.get_json()['accountType']
-    customerID = request.get_json()['customerID']
-    cursor = accounts.create_account(accountname, password, accountType, customerID)
-    result = False
-    if(cursor):
-        result = True
+    cursor = accounts.create_account(accountname, password, accountType)
+    if(type(cursor) == bool):
+        return {
+            "operationSuccess": cursor
+        }
     else:
-        result = False
-    return {
-        "operationSuccess": result
-    }
-
+        json_data = parse_json(cursor)
+        return json_data
+    
 @account_bp.route("/changepassword/<id>", methods=["POST"])
 def Updateaccount(id):
     password = request.get_json()['password']

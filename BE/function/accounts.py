@@ -18,12 +18,14 @@ def log_in(username, password: str, loginType):
 def log_out(sessionID, accountID):
     return authentication.remove_expired_sessions(sessionID, accountID)
 
-def create_account(username, password: str, accountType, customerID):
+def create_account(username, password: str, accountType):
     accounts = db.GetCollection("accounts")
     encodePassword = base64.b64encode(password.encode("utf-8"))
-    result = accounts.insert_one({"username": username, "password": encodePassword, "accountType": accountType})
-    db.GetCollection("customers").update_one({"_id": ObjectId(customerID)}, {"$set": {"accountID": result.inserted_id}})
-    return result.inserted_id
+    result = accounts.insert_one({"username": username, "password": encodePassword, "accountType": accountType})  
+    return {
+            "operationSuccess": True,
+            "accountID": str(result.inserted_id)
+        }
 
 def delete_account(accountID):
     accounts = db.GetCollection("accounts")

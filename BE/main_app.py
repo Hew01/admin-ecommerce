@@ -2,6 +2,7 @@ from flask import Flask, jsonify, send_file, send_from_directory, Blueprint, req
 from flask_cors import CORS
 import os, json
 import api.categories_api
+import api.chat_api
 import api.coupons_api
 import api.customer_api
 import api.order_api
@@ -11,8 +12,9 @@ import api.accounts_api
 from function import products
 from mongoDB.databaseAPI import parse_json
 import api
-
+from webSocket.app import socketio
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
 CORS(app)
 
 app.register_blueprint(api.product_api.product_bp)
@@ -64,6 +66,9 @@ app.register_blueprint(api.accounts_api.account_bp)
 
 app.register_blueprint(api.posts_api.post_bp)
 
+app.register_blueprint(api.chat_api.chat_bp)
+
+socketio.init_app(app)
 
 if __name__ == '__main__':
-    app.run()
+    socketio.run(app, debug=True)

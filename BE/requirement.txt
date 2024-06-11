@@ -4,3 +4,4 @@ pymongo[srv]
 pandas
 facebook-sdk
 pymessenger
+flask-socketio

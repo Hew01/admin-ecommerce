@@ -29,6 +29,7 @@ def AddCustomer():
     email = request.get_json()["email"]
     phone = request.get_json()["phoneNumber"]
     address = request.get_json()["deliveryAddress"]
+    accountID = request.get_json()['accountID']
     cursor = customers.insert_customer(request.get_json())
     result = False
     if(cursor):

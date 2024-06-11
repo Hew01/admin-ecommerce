@@ -9,13 +9,14 @@ def insert_customer(document):
         "customerType": document["customerType"],
         "email": document["email"],
         "phoneNumber": document["phoneNumber"],
-        "accountID": None,
         "couponList": [],
         "wishlist": [],
         "deliveryAddress": document["deliveryAddress"],
     }
+    account = db.GetCollection("accounts").find_one({"_id": ObjectId(document["accountID"])})
     collection = db.GetCollection("customers")
     result = collection.insert_one(insertDocument)
+    db.GetCollection("accounts").update_one({"_id": ObjectId(document["accountID"])}, {"$set": {"customerID": str(result.inserted_id)}})
     return result.inserted_id
 
 def get_all_customers():
