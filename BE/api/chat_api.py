@@ -56,5 +56,17 @@ def create_new_chat():
             "operationSuccess": cursor
         }
     else:
+        socketio.emit('new_chat', cursor)
+        json_data = parse_json(cursor)
+        return json_data
+
+@chat_bp.route('/get_all_chats', methods=['POST'])
+def get_all_chats():
+    cursor = chat.getAllChats()
+    if(type(cursor) == bool):
+        return {
+            "operationSuccess": cursor
+        }
+    else:
         json_data = parse_json(cursor)
         return json_data

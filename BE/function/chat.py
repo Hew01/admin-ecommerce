@@ -78,3 +78,8 @@ def create_new_chat(userID, adminID):
         return {
         "operationSuccess": False
         }
+    
+def getAllChats():
+    collection = db.GetCollection("chats")
+    chats = collection.find({})
+    return chats
