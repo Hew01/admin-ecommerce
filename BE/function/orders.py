@@ -133,3 +133,9 @@ def set_shipping_status(order_id, new_shipping_status):
     }
     result = collection.update_one(query_filter, update_doc)
     return result.matched_count > 0
+
+def get_orders_by_customer(customer_id):
+    collection = db.GetCollection("orders")
+    query_filter = {'customerID': customer_id}
+    result = collection.find(query_filter)
+    return result

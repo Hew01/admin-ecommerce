@@ -92,3 +92,9 @@ def set_shipping_status(id, status):
     return {
         "operationSuccess": cursor
     }
+
+@order_bp.route('/get_order_by_customer/<id>', methods=['POST'])
+def get_order_by_customer(id):
+    cursor = orders.get_orders_by_customer(id)
+    json_data = parse_json(cursor)
+    return json_data
