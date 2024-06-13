@@ -1,4 +1,6 @@
-# ECOMMERCE_BACK_END
+# ECOMMERCE_Admib
+---------------------------------
+BACK_END
 This is the back end of an mobile app
 
 How to install BE:
@@ -15,3 +17,4 @@ How to install BE:
 Rerun "./venv/Scripts/active" everytime you want to run the app
 
 Python version: 3.12
+---------------------------------
