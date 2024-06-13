@@ -1,4 +1,4 @@
-# ECOMMERCE_Admib
+# ECOMMERCE_Admin
 ---------------------------------
 BACK_END
 This is the back end of an mobile app
