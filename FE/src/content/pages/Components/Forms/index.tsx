@@ -73,7 +73,7 @@ function Forms() {
       </Helmet>
       <PageTitleWrapper>
         <PageTitle
-          heading="Forms"
+          heading=""
           subHeading="Components that are used to build interactive placeholders used for data collection from users."
           docs="https://material-ui.com/components/text-fields/"
         />

@@ -1,5 +1,5 @@
 import { Typography, Button, Grid } from '@mui/material';
-
+import { NavLink as RouterLink } from 'react-router-dom';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
 function PageHeader() {
@@ -7,16 +7,17 @@ function PageHeader() {
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
         <Typography variant="h3" component="h3" gutterBottom>
-          Orders
+          Products
         </Typography>
       </Grid>
       <Grid item>
         <Button
-
+          component={RouterLink}
           variant="contained"
+          to="add"
           startIcon={<AddTwoToneIcon fontSize="small" />}
         >
-          Create orders
+          Create product
         </Button>
       </Grid>
     </Grid>

@@ -30,9 +30,15 @@ const Messenger = Loader(
 const Orders = Loader(
   lazy(() => import('src/content/applications/Orders'))
 );
+const AddOrder = Loader(
+  lazy(() => import('src/content/applications/Orders/Detail'))
+);
 const Products = Loader(
   lazy(() => import('src/content/applications/Products'))
 );
+const AddProduct = Loader(
+  lazy(() => import('src/content/applications/Products/Detail'))
+)
 const Categories = Loader(
   lazy(() => import('src/content/applications/Categories'))
 );
@@ -157,8 +163,16 @@ const routes: RouteObject[] = [
         element: <Orders />
       },
       {
+        path: 'orders/add',
+        element: <AddOrder />
+      },
+      {
         path: 'products',
-        element: <Products />
+        element: <Products />,
+      },
+      {
+        path: 'products/add',
+        element: <AddProduct />
       },
       {
         path: 'categories',
