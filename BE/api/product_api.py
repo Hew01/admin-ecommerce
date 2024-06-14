@@ -51,7 +51,7 @@ def AddProduct():
     productName = request.get_json()['productName']
     componentType = request.get_json()['category']
     price = request.get_json()['price']  
-    detailedInfo = request.get_json()['Detailed Info']  
+    detailedInfo = request.get_json()['detailed_info']  
     image = request.get_json()['images']
     brand = request.get_json()['brand']
     decription = request.get_json()['description']
@@ -82,7 +82,7 @@ def RemoveProduct(id):
 
 @product_bp.route('/update/<id>', methods=['POST'])
 def UpdateProduct(id):
-    cursor = products.UpdateProduct("products", id, request.get_json())
+    cursor = products.UpdateProduct(id, request.get_json())
     result = False
     if(cursor):
         result = True

@@ -60,9 +60,6 @@ function ActivityTab() {
         }}
       >
         <Box>
-          <Button startIcon={<ThumbUpAltTwoToneIcon />} variant="contained">
-            Like
-          </Button>
           <Button
             startIcon={<CommentTwoToneIcon />}
             variant="outlined"
@@ -70,9 +67,7 @@ function ActivityTab() {
           >
             Comment
           </Button>
-          <Button startIcon={<ShareTwoToneIcon />} variant="outlined">
-            Share
-          </Button>
+
         </Box>
         <Box sx={{ mt: { xs: 2, md: 0 } }}>
           <Typography variant="subtitle2" component="span">

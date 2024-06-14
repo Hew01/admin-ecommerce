@@ -33,11 +33,17 @@ const Orders = Loader(
 const AddOrder = Loader(
   lazy(() => import('src/content/applications/Orders/Detail'))
 );
+const EditOrder = Loader(
+  lazy(() => import('src/content/applications/Orders/Edit'))
+);
 const Products = Loader(
   lazy(() => import('src/content/applications/Products'))
 );
 const AddProduct = Loader(
   lazy(() => import('src/content/applications/Products/Detail'))
+)
+const EditProduct = Loader(
+  lazy(() => import('src/content/applications/Products/Edit'))
 )
 const Categories = Loader(
   lazy(() => import('src/content/applications/Categories'))
@@ -167,12 +173,20 @@ const routes: RouteObject[] = [
         element: <AddOrder />
       },
       {
+        path: 'orders/edit/:orderId',
+        element: <EditOrder />
+      },
+      {
         path: 'products',
         element: <Products />,
       },
       {
         path: 'products/add',
         element: <AddProduct />
+      },
+      {
+        path: 'products/edit/:productId',
+        element: <EditProduct />
       },
       {
         path: 'categories',

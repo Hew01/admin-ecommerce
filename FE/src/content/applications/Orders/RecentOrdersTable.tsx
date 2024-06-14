@@ -30,6 +30,7 @@ import { Order, OrderStatus } from 'src/models/order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
+import { NavLink as RouterLink } from 'react-router-dom';
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -46,16 +47,19 @@ const getStatusLabel = (orderStatus: OrderStatus): JSX.Element => {
       text: 'Failed',
       color: 'error'
     },
-    completed: {
-      text: 'Completed',
+    paid: {
+      text: 'Paid',
       color: 'success'
     },
-    pending: {
+    standby: {
       text: 'Pending',
       color: 'warning'
     }
   };
-
+  if (!map[orderStatus]) {
+    console.error(`Invalid orderStatus: ${orderStatus}`);
+    return null; // or return a default label
+  }
   const { text, color }: any = map[orderStatus];
 
   return <Label color={color}>{text}</Label>;
@@ -68,7 +72,7 @@ const applyFilters = (
   return orders.filter((order) => {
     let matches = true;
 
-    if (filters.status && order.status !== filters.status) {
+    if (filters.status && order.orderStatus !== filters.status) {
       matches = false;
     }
 
@@ -101,8 +105,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
       name: 'All'
     },
     {
-      id: 'completed',
-      name: 'Completed'
+      id: 'paid',
+      name: 'Paid'
     },
     {
       id: 'pending',
@@ -132,7 +136,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
   ): void => {
     setSelectedOrders(
       event.target.checked
-        ? orders.map((order) => order.id)
+        ? orders.map((order) => order._id.$oid)
         : []
     );
   };
@@ -218,7 +222,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                   onChange={handleSelectAllOrders}
                 />
               </TableCell>
-              <TableCell>Order Status</TableCell>
+              <TableCell sx={{ width: '30%' }}>Order Status</TableCell>
               <TableCell>Order ID</TableCell>
               <TableCell>Source</TableCell>
               <TableCell align="right">Amount</TableCell>
@@ -229,20 +233,22 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
           <TableBody>
             {paginatedOrders.map((order) => {
               const isOrderSelected = selectedOrders.includes(
-                order.id
+                order._id.$oid
               );
               return (
                 <TableRow
                   hover
-                  key={order.id}
+                  key={order._id.$oid}
                   selected={isOrderSelected}
+                  component={RouterLink}
+                  to={`edit/${order._id.$oid}`}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
                       color="primary"
                       checked={isOrderSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneOrder(event, order.id)
+                        handleSelectOneOrder(event, order._id.$oid)
                       }
                       value={isOrderSelected}
                     />
@@ -255,10 +261,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {order.orderDetails}
+                      {order.orderSource}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" noWrap>
-                      {format(order.orderDate, 'MMMM dd yyyy')}
+                      {order.dateCreated}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -269,7 +275,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {order.orderID}
+                      {order._id.$oid}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -280,10 +286,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {order.sourceName}
+                      {order.paymentMethod.methodName}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" noWrap>
-                      {order.sourceDesc}
+                      {order.paymentMethod.transactionCode}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
@@ -294,13 +300,13 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {numeral(order.amount).format(
-                        `${order.currency}0,0.00`
+                      {numeral(order.totalAmount).format(
+                        `$0,0.00`
                       )}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
-                    {getStatusLabel(order.status)}
+                    {getStatusLabel(order.orderStatus)}
                   </TableCell>
                   <TableCell align="right">
                     <Tooltip title="Edit Order" arrow>

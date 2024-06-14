@@ -13,8 +13,6 @@ import React, { useState } from 'react';
 
 export default function AddCategoryDialog({ open, handleClose }) {
   const [title, setTitle] = useState('');
-  const [parent, setParent] = useState('');
-  const [status, setStatus] = useState('');
 
   return (
     <Dialog
@@ -35,19 +33,6 @@ export default function AddCategoryDialog({ open, handleClose }) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-        </Box>
-        <Box mt={2}>
-          <TextField
-            id="outlined-select-currency"
-            select
-            label="Status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            fullWidth
-          >
-            <MenuItem value={10}>Active</MenuItem>
-            <MenuItem value={20}>Inactive</MenuItem>
-          </TextField>
         </Box>
       </DialogContent>
       <DialogActions>

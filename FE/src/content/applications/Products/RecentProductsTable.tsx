@@ -26,49 +26,47 @@ import {
 } from '@mui/material';
 
 import Label from 'src/components/Label';
-import { Order, OrderStatus } from 'src/models/order';
+import { Product, ProductStatus } from 'src/models/product';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
+import { NavLink as RouterLink } from 'react-router-dom';
 
-interface RecentOrdersTableProps {
+interface RecentProductsTableProps {
   className?: string;
-  cryptoOrders: Order[];
+  products: Product[];
 }
 
 interface Filters {
-  status?: OrderStatus;
+  status?: ProductStatus;
 }
 
-const getStatusLabel = (cryptoOrderStatus: OrderStatus): JSX.Element => {
+const getStatusLabel = (productStatus: ProductStatus): JSX.Element => {
   const map = {
-    failed: {
-      text: 'Failed',
+    inactive: {
+      text: 'Inactive',
       color: 'error'
     },
-    completed: {
-      text: 'Completed',
-      color: 'success'
-    },
-    pending: {
-      text: 'Pending',
+    scheduled: {
+      text: 'Scheduled',
       color: 'warning'
+    },
+    published: {
+      text: 'Published',
+      color: 'success'
     }
   };
 
-  const { text, color }: any = map[cryptoOrderStatus];
+  const { text, color }: any = map[productStatus];
 
   return <Label color={color}>{text}</Label>;
 };
 
-const applyFilters = (
-  cryptoOrders: Order[],
-  filters: Filters
-): Order[] => {
-  return cryptoOrders.filter((cryptoOrder) => {
+const applyFilters = (products: Product[], filters: Filters): Product[] => {
+  return products.filter((product) => {
     let matches = true;
 
-    if (filters.status && cryptoOrder.status !== filters.status) {
+    if (filters.status && product.publishStatus !== filters.status) {
       matches = false;
     }
 
@@ -77,18 +75,16 @@ const applyFilters = (
 };
 
 const applyPagination = (
-  cryptoOrders: Order[],
+  products: Product[],
   page: number,
   limit: number
-): Order[] => {
-  return cryptoOrders.slice(page * limit, page * limit + limit);
+): Product[] => {
+  return products.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
-  const [selectedOrders, setSelectedOrders] = useState<string[]>(
-    []
-  );
-  const selectedBulkActions = selectedOrders.length > 0;
+const RecentProductsTable: FC<RecentProductsTableProps> = ({ products }) => {
+  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+  const selectedBulkActions = selectedProducts.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
@@ -101,16 +97,12 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       name: 'All'
     },
     {
-      id: 'completed',
-      name: 'Completed'
+      id: 'published',
+      name: 'Published'
     },
     {
-      id: 'pending',
-      name: 'Pending'
-    },
-    {
-      id: 'failed',
-      name: 'Failed'
+      id: 'inactive',
+      name: 'Inactive'
     }
   ];
 
@@ -127,28 +119,23 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     }));
   };
 
-  const handleSelectAllOrders = (
+  const handleSelectAllProducts = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
-    setSelectedOrders(
-      event.target.checked
-        ? cryptoOrders.map((cryptoOrder) => cryptoOrder.id)
-        : []
+    setSelectedProducts(
+      event.target.checked ? products.map((product) => product._id) : []
     );
   };
 
-  const handleSelectOneOrder = (
+  const handleSelectOneProduct = (
     event: ChangeEvent<HTMLInputElement>,
-    cryptoOrderId: string
+    productId: string
   ): void => {
-    if (!selectedOrders.includes(cryptoOrderId)) {
-      setSelectedOrders((prevSelected) => [
-        ...prevSelected,
-        cryptoOrderId
-      ]);
+    if (!selectedProducts.includes(productId)) {
+      setSelectedProducts((prevSelected) => [...prevSelected, productId]);
     } else {
-      setSelectedOrders((prevSelected) =>
-        prevSelected.filter((id) => id !== cryptoOrderId)
+      setSelectedProducts((prevSelected) =>
+        prevSelected.filter((id) => id !== productId)
       );
     }
   };
@@ -161,17 +148,11 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const filteredOrders = applyFilters(cryptoOrders, filters);
-  const paginatedOrders = applyPagination(
-    filteredOrders,
-    page,
-    limit
-  );
-  const selectedSomeOrders =
-    selectedOrders.length > 0 &&
-    selectedOrders.length < cryptoOrders.length;
-  const selectedAllOrders =
-    selectedOrders.length === cryptoOrders.length;
+  const filteredProducts = applyFilters(products, filters);
+  const paginatedProducts = applyPagination(filteredProducts, page, limit);
+  const selectedSomeProducts =
+    selectedProducts.length > 0 && selectedProducts.length < products.length;
+  const selectedAllProducts = selectedProducts.length === products.length;
   const theme = useTheme();
 
   return (
@@ -202,7 +183,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
               </FormControl>
             </Box>
           }
-          title="Recent Orders"
+          title="Recent Products"
         />
       )}
       <Divider />
@@ -213,37 +194,38 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
               <TableCell padding="checkbox">
                 <Checkbox
                   color="primary"
-                  checked={selectedAllOrders}
-                  indeterminate={selectedSomeOrders}
-                  onChange={handleSelectAllOrders}
+                  checked={selectedAllProducts}
+                  indeterminate={selectedSomeProducts}
+                  onChange={handleSelectAllProducts}
                 />
               </TableCell>
-              <TableCell sx={{width: '40%'}}>Categories</TableCell>
-              <TableCell>Total Products</TableCell>
-              <TableCell align="right">Total Earnings</TableCell>
+              <TableCell sx={{ width: '30%' }}>Products</TableCell>
+              <TableCell>Category</TableCell>
+              <TableCell>Stock</TableCell>
+              <TableCell align="right">Price</TableCell>
               <TableCell align="right">Status</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedOrders.map((cryptoOrder) => {
-              const isOrderSelected = selectedOrders.includes(
-                cryptoOrder.id
-              );
+            {paginatedProducts.map((product) => {
+              const isProductSelected = selectedProducts.includes(product._id);
               return (
                 <TableRow
                   hover
-                  key={cryptoOrder.id}
-                  selected={isOrderSelected}
+                  key={product._id}
+                  selected={isProductSelected}
+                  component={RouterLink}
+                  to={`edit/${product._id}`}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
                       color="primary"
-                      checked={isOrderSelected}
+                      checked={isProductSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneOrder(event, cryptoOrder.id)
+                        handleSelectOneProduct(event, product._id)
                       }
-                      value={isOrderSelected}
+                      value={isProductSelected}
                     />
                   </TableCell>
                   <TableCell>
@@ -254,10 +236,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.orderDetails}
+                      {product.productName}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" noWrap>
-                      {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
+                      {product.brand}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -268,7 +250,21 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.orderID}
+                      {product.category}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {product.quantity}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" noWrap>
+                      Instock: {product.instockStatus ? 'Yes' : 'No'}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
@@ -279,16 +275,14 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {numeral(cryptoOrder.amount).format(
-                        `${cryptoOrder.currency}0,0.00`
-                      )}
+                      {numeral(product.price).format(`$0,0.00`)}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
-                    {getStatusLabel(cryptoOrder.status)}
+                    {getStatusLabel(product.publishStatus)}
                   </TableCell>
                   <TableCell align="right">
-                    <Tooltip title="Edit Order" arrow>
+                    <Tooltip title="Edit Product" arrow>
                       <IconButton
                         sx={{
                           '&:hover': {
@@ -302,7 +296,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Delete Order" arrow>
+                    <Tooltip title="Delete Product" arrow>
                       <IconButton
                         sx={{
                           '&:hover': { background: theme.colors.error.lighter },
@@ -324,7 +318,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       <Box p={2}>
         <TablePagination
           component="div"
-          count={filteredOrders.length}
+          count={filteredProducts.length}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}
@@ -336,12 +330,12 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   );
 };
 
-RecentOrdersTable.propTypes = {
-  cryptoOrders: PropTypes.array.isRequired
+RecentProductsTable.propTypes = {
+  products: PropTypes.array.isRequired
 };
 
-RecentOrdersTable.defaultProps = {
-  cryptoOrders: []
+RecentProductsTable.defaultProps = {
+  products: []
 };
 
-export default RecentOrdersTable;
+export default RecentProductsTable;

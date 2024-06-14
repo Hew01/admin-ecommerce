@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_file, send_from_directory, Blueprint, request
+from flask import Flask, jsonify, send_file, send_from_directory, Blueprint, request, Response
 from flask_cors import CORS
 import os, json
 import api.categories_api
@@ -15,7 +15,7 @@ import api
 from webSocket.app import socketio
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-CORS(app)
+CORS(app, origins="http://localhost:3000", methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"], headers=['Content-Type', 'Authorization'])
 
 app.register_blueprint(api.product_api.product_bp)
 #/products/search
@@ -68,7 +68,12 @@ app.register_blueprint(api.posts_api.post_bp)
 
 app.register_blueprint(api.chat_api.chat_bp)
 
-socketio.init_app(app)
+socketio.init_app(app, cors_allowed_origins="http://localhost:3000")
+
+@app.before_request
+def basic_authentication():
+    if request.method.lower() == 'options':
+        return Response()
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, port=5000)

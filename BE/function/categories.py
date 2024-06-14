@@ -29,6 +29,7 @@ def get_all_categories_with_total_amount():
                     totalAmount += product["price"]*item["quantity"]
             currentDocAmount += totalAmount
         result.append({
+            "_id": str(doc["_id"]),
             "categoryName": doc["categoryName"],
             "productQuantity": doc["productQuantity"],
             "totalAmount": currentDocAmount
@@ -48,7 +49,7 @@ def update_category(category_id, document):
     update = {
         "categoryName": document["categoryName"],
     }
-    result = db.UpdateDocument("orders", category_id, update)
+    result = db.UpdateDocument("categories", category_id, update)
     return result
 
 def get_category_by_id(category_id):

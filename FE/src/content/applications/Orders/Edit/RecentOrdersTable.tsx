@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useState } from 'react';
+import { FC, ChangeEvent, useState, useCallback, useEffect } from 'react';
 import { format } from 'date-fns';
 import numeral from 'numeral';
 import PropTypes from 'prop-types';
@@ -24,18 +24,68 @@ import {
 } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
-import { Order } from 'src/models/order';
+import { Product } from 'src/models/product';
 import BulkActions from './BulkActions';
-
+import apiFetch from 'src/utils/apiConfig';
 interface RecentOrdersTableProps {
   className?: string;
+  products: {
+    productID: string;
+    quantity: number;
+  } [];
 }
-const RecentOrdersTable: FC<RecentOrdersTableProps> = ({  }) => {
+
+type FullProduct = {
+    productID: string;
+    quantity: number;
+    name: string;
+    price: number;
+}
+
+type ShortenedProduct = {
+  productID: string;
+  quantity: number;
+}
+const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ products }) => {
   const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
   const [addingProduct, setAddingProduct] = useState(false);
-  const [newProduct, setNewProduct] = useState<Order | null>(null);
+  const [newProduct, setNewProduct] = useState<ShortenedProduct | null>(null);
   const [value, setValue] = useState(null);
   const [error, setError] = useState(false);
+  const [productFulls, setProductFulls] = useState<FullProduct[] | null>([]);
+  const [productNames, setProductNames] = useState<string[]>([]);
+  useEffect(() => {
+    const getShortenedProduct = async (product: ShortenedProduct) => {
+      console.log(product);
+      const response = await apiFetch('products/' + product.productID, '');
+      return {
+        ...product,
+        name: response.productName,
+        price: response.price,
+      };
+    };
+
+    Promise.all(products.map(product => getShortenedProduct(product)))
+      .then(shortenedProducts => {
+        setProductFulls(shortenedProducts);
+      });
+  }, [products]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try { 
+        const response = await apiFetch('products/all', '');
+        const productNames = response.map(product => product.productName);
+        setProductNames(productNames);
+        console.log(productNames);
+      } catch (error) {
+        console.error('Error fetching data', error);
+      }
+    };
+    
+
+    fetchData();
+  }, []);
 
   const handleChange = (event) => {
     const inputValue = event.target.value;
@@ -50,25 +100,25 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({  }) => {
     event: ChangeEvent<HTMLInputElement>
   ): void => {
     setSelectedOrders(
-      event.target.checked ? orders.map((order) => order.id) : []
+      event.target.checked ? products.map((product) => product.productID) : []
     );
   };
 
   const handleSelectOneOrder = (
     event: ChangeEvent<HTMLInputElement>,
-    orderId: string
+    productID: string
   ): void => {
-    if (!selectedOrders.includes(orderId)) {
-      setSelectedOrders((prevSelected) => [...prevSelected, orderId]);
+    if (!selectedOrders.includes(productID)) {
+      setSelectedOrders((prevSelected) => [...prevSelected, productID]);
     } else {
       setSelectedOrders((prevSelected) =>
-        prevSelected.filter((id) => id !== orderId)
+        prevSelected.filter((id) => id !== productID)
       );
     }
   };
   const selectedSomeOrders =
-    selectedOrders.length > 0 && selectedOrders.length < orders.length;
-  const selectedAllOrders = selectedOrders.length === orders.length;
+    selectedOrders.length > 0 && selectedOrders.length < products.length;
+  const selectedAllOrders = selectedOrders.length === products.length;
   const theme = useTheme();
   const handleAddProduct = () => {
     setAddingProduct(true);
@@ -81,7 +131,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({  }) => {
 
   const handleDoneAddProduct = () => {
     if (newProduct) {
-      orders.push(newProduct);
+      products.push(newProduct);
       setNewProduct(null);
     }
     setAddingProduct(false);
@@ -90,6 +140,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({  }) => {
     { title: 'The Shawshank Redemption', year: 1994 }
     // The rest of your list
   ];
+  
   return (
     <Card>
       {selectedBulkActions && (
@@ -130,14 +181,14 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({  }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-          {orders.map((order) => {
+          {products.map((product, index) => {
               const isOrderSelected = selectedOrders.includes(
-                order.id
+                product.productID
               );
               return (
                 <TableRow
                   hover
-                  key={order.id}
+                  key={product.productID}
                   selected={isOrderSelected}
                 >
                   <TableCell padding="checkbox" sx={{paddingLeft: 1.6}}>
@@ -145,7 +196,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({  }) => {
                       color="primary"
                       checked={isOrderSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneOrder(event, order.id)
+                        handleSelectOneOrder(event, product.productID)
                       }
                       value={isOrderSelected}
                     />
@@ -158,10 +209,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({  }) => {
                       gutterBottom
                       noWrap
                     >
-                      {order.orderDetails}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {format(order.orderDate, 'MMMM dd yyyy')}
+                      {productFulls[index]?.name}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
@@ -172,34 +220,35 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({  }) => {
                       gutterBottom
                       noWrap
                     >
-                      {order.orderID}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {order.sourceName}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {order.sourceDesc}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {numeral(order.amount).format(
-                        `${order.currency}0,0.00`
+                      {numeral(productFulls[index]?.price).format(
+                        `$0,0.00`
                       )}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" noWrap>
+                      {productFulls[index]?.quantity}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {numeral(productFulls[index]?.price * productFulls[index]?.quantity).format('$0,0.00')
+}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -247,11 +296,11 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({  }) => {
                     }}
                     id="free-solo"
                     freeSolo
-                    options={top100Films}
-                    getOptionLabel={(option) => option.title}
+                    options={productNames}
+                    getOptionLabel={(option) => option}
                     renderOption={(props, option) => (
                       <Box component="li" {...props}>
-                        <Typography variant="body1">{option.title}</Typography>
+                        <Typography variant="body1">{option}</Typography>
                       </Box>
                     )}
                     renderInput={(params) => (
@@ -306,11 +355,11 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({  }) => {
 };
 
 RecentOrdersTable.propTypes = {
-  orders: PropTypes.array.isRequired
+  products: PropTypes.array.isRequired
 };
 
 RecentOrdersTable.defaultProps = {
-  orders: []
+  products: []
 };
 
 export default RecentOrdersTable;

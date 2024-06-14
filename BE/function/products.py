@@ -13,7 +13,7 @@ def GetAllProduct():
         "_id": str(product["_id"]),
         "productName": product["productName"],
         "price": product["price"],
-        "Detailed Info": product["Detailed Info"],
+        "detailed_info": product["Detailed Info"],
         "images": product["images"],
         "brand": product["brand"],
         "description": product["description"],
@@ -35,7 +35,7 @@ def GetProductByID(id):
         "_id": str(result["_id"]),
         "productName": result["productName"],
         "price": result["price"],
-        "Detailed Info": result["Detailed Info"],
+        "detailed_info": result["Detailed Info"],
         "images": result["images"],
         "brand": result["brand"],
         "description": result["description"],
@@ -59,7 +59,7 @@ def FindProductByName(name):
         "_id": str(product["_id"]),
         "productName": product["productName"],
         "price": product["price"],
-        "Detailed Info": product["Detailed Info"],
+        "detailed_info": product["Detailed Info"],
         "images": product["images"],
         "brand": product["brand"],
         "description": product["description"],
@@ -77,7 +77,7 @@ def AddProduct(collectionName, document):
     "productName": document["productName"],
     "category": ObjectId(document["category"]),
     "price": document["price"],
-    "Detailed Info": document["Detailed Info"],
+    "Detailed Info": document["detailed_info"],
     "images": document["images"],
     "brand": document["brand"],
     "description": document["description"],
@@ -110,16 +110,23 @@ def UpdateProduct(productID, document):
     :param updateDocument: updateDocument (json object) will containt these field: productName, brand, price, Detailed Info, images, decription, componentType. It will update a field in the document
     :return: True if update success, else False
     """
-    updateDocument = {       
+    category = db.GetCollection("categories").find_one({"categoryName": document["category"]})
+    updateDocument = {
     "productName": document["productName"],
     "price": document["price"],
-    "Detailed Info": document["Detailed Info"],
+    "Detailed Info": document["detailed_info"],
     "images": document["images"],
     "brand": document["brand"],
     "description": document["description"],
-    "category": ObjectId(document["category"]),
+    "category": category["_id"],
     }
     result = db.UpdateDocument("products", productID, updateDocument)
+    inventory = db.GetCollection("inventory").find_one({"productID": ObjectId(productID)})
+    result = db.UpdateInventoryItem(inventory["_id"], {"$set":{
+        "quantity": document["quantity"],
+        "instockStatus": document["instockStatus"],
+        "publishStatus": document["publishStatus"]
+    }})
     return result
 
 def GetCompactProducts():  

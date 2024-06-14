@@ -3,17 +3,18 @@ import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
-
-import RecentOrders from './CategoryList';
+import EditProduct from './EditProduct';
+import { useParams } from 'react-router';
 
 function ApplicationsTransactions() {
+  const {productId} = useParams();
   return (
     <>
       <Helmet>
-        <title>Transactions - Applications</title>
+        <title>Edit Products</title>
       </Helmet>
       <PageTitleWrapper>
-        <PageHeader />
+        <PageHeader productId={productId}/>
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
@@ -24,7 +25,7 @@ function ApplicationsTransactions() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <RecentOrders />
+            <EditProduct productId={productId}/>
           </Grid>
         </Grid>
       </Container>
